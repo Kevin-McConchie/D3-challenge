@@ -43,7 +43,7 @@ function xScale(data, chosenXAxis) {
 
 }
 
-// function used for updating xAxis var upon click on axis label
+// function used for updating yAxis var upon click on axis label
 function renderAxes(newXScale, xAxis) {
     var bottomAxis = d3.axisBottom(newXScale);
     xAxis.transition()
@@ -63,27 +63,27 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
 
 // function used for updating circles group with new tooltip info
 function updateToolTip(chosenXAxis, circlesGroup) {
-    var xlabel;
+    var label;
     if (chosenXAxis === "poverty") {
-        xlabel = "Poverty:";
+        label = "Poverty:";
     }
     else if(chosenXAxis === "age") {
-        xlabel = "Age:";
+        label = "Age:";
     }
     else if(chosenXAxis === "income") {
-        xlabel = "Income:";
+        label = "Income:";
     }
-
-    var ylabel;
-    if (chosenXAxis === "healthcare") {
-        ylabel = "Healthcare:";
-    }
-    else if(chosenXAxis === "obesity") {
-        ylabel = "Obesity:";
-    }
-    else if(chosenXAxis === "smokes") {
-        ylabel = "Smokes:";
-    }
+    
+    // var ylabel;
+    // if (chosenYAxis === "healthcare") {
+    //     ylabel = "Healthcare:";
+    // }
+    // else if(chosenYxis === "obesity") { 
+    //     ylabel = "Obesity:";
+    // }
+    // else if(chosenYAxis === "smokes") {
+    //     ylabel = "Smokes:";
+    // }
 
     var toolTip = d3.tip()
         .attr("class", "tooltip")
@@ -137,10 +137,14 @@ d3.csv("assets/data/data.csv").then(function (data, err) {
     var yLinearScale = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.healthcare)])
         .range([height, 0]);
-    // var yLinearScale = xScale(data, chosenYAxis);
+
+        // ### fix this ###
+    // var yLinearScale = xScale(data, chosenYAxis); 
 
     // Create initial axis functions
     var bottomAxis = d3.axisBottom(xLinearScale);
+
+    // ### fix this ###
     var leftAxis = d3.axisLeft(yLinearScale);
 
     // append x axis
@@ -180,14 +184,14 @@ d3.csv("assets/data/data.csv").then(function (data, err) {
         .attr("y", 40)
         .attr("value", "age") // value to grab for event listener
         .classed("inactive", true)
-        .text("Age");
+        .text("Average Age in Years");
 
         var incomeLabel = labelsGroup.append("text")
         .attr("x", 0)
         .attr("y", 60)
         .attr("value", "income") // value to grab for event listener
         .classed("inactive", true)
-        .text("Income");
+        .text("Mean Income in $");
 
 
     // append y axis
@@ -197,7 +201,7 @@ d3.csv("assets/data/data.csv").then(function (data, err) {
         .attr("x", 0 - (height / 2))
         .attr("dy", "1em")
         .classed("axis-text", true)
-        .text("Healthcare Rating Level");
+        .text("Mean Healthcare");
 
     // updateToolTip function above csv import
     var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
